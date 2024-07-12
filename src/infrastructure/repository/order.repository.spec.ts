@@ -60,8 +60,17 @@ describe("Teste do repositório de pedidos", () => {
 
     it("Deve atualizar um pedido existente", async () => {
         let { order, customer, orderItem, product } = await criarOrdemDeTeste(orderRepository)
-        customer = new Customer("9991", "Zezinho")
-        order = new Order(order.id, customer.id, [orderItem])
+        const customerNaoPodeAlterar = new Customer("9991", "Zezinho")
+        const p2 = await criarOutroProduto()
+        const orderItem2 = new OrderItem(
+            "item 2",
+            p2.name,
+            p2.price,
+            p2.id,
+            1,
+        )
+    
+        order = new Order(order.id, customerNaoPodeAlterar.id, [orderItem, orderItem2])
         await orderRepository.update(order)
 
         const orderModel = await OrderModel.findOne({
@@ -79,7 +88,15 @@ describe("Teste do repositório de pedidos", () => {
                     price: orderItem.price,
                     quantity: orderItem.quantity,
                     order_id: order.id,
-                    product_id: product.id,
+                    product_id: orderItem.productId,
+                },
+                {
+                    id: orderItem2.id,
+                    name: orderItem2.name,
+                    price: orderItem2.price,
+                    quantity: orderItem2.quantity,
+                    order_id: order.id,
+                    product_id: orderItem2.productId,
                 },
             ],
         })
@@ -127,3 +144,9 @@ async function criarOrdemDeTeste(orderRepository: OrderRepositoryInterface) {
     return { order, customer, orderItem, product }
 }
 
+async function criarOutroProduto(): Promise<Product> {
+    const productRepository = new ProductRepository()
+    const product = new Product("222", "Product 2", 22.22)
+    await productRepository.create(product)
+    return product
+}
