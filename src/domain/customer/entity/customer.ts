@@ -22,9 +22,13 @@ export default class Customer extends AgreggateRoot {
     }
 
     static create(id: string, name: string): Customer {
-        const custumer = new Customer(id, name)
+        const custumer = Customer.new(id, name)
         custumer.addEvent(new CustomerCreated(id, name))
         return custumer
+    }
+
+    static new(id: string, name: string): Customer {
+        return new Customer(id, name)
     }
 
     validate() {
