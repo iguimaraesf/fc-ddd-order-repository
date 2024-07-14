@@ -28,11 +28,7 @@ export default class OrderItemModel extends Model {
         constraints: false,
         foreignKey: "order_id",
         as: "items",
-        keyType: "hasMany"
-        // inverse: {
-        //     as: "items",
-        //     type: "hasMany"
-        // },
+        keyType: "hasMany",
     })
     declare order?: NonAttribute<OrderModel>
 

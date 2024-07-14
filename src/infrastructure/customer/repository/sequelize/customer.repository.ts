@@ -45,7 +45,7 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
         return this.toCustomer(model)
     }
     private toCustomer(model: CustomerModel): Customer {
-        const res = new Customer(
+        const res = Customer.create(
             model.id,
             model.name,
         )

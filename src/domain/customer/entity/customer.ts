@@ -1,21 +1,30 @@
 // Modelagem de domínios ricos - entidades carregam as regras de negócio do sistema
-
+import { AgreggateRoot } from "../../@shared/domain/aggregate-root"
 import Address from "../value-object/address"
+import { CustomerCreated } from "./customer-created.event";
+import { CustomerNameChanged } from "./customer-name-changed.event";
 
 // Os dados devem estar CONSISTENTES sempre.
-export default class Customer {
+export default class Customer extends AgreggateRoot {
     private _id: string
     private _name: string = ""
     private _address!: Address
     private _active: boolean = false
     private _rewardPoints: number = 0
     
-    constructor(id: string, name: string) {
+    private constructor(id: string, name: string) {
+        super()
         // uma entidade sempre se auto valida
         this._id = id
         this._name = name
         // this._address = address
         this.validate()
+    }
+
+    static create(id: string, name: string): Customer {
+        const custumer = new Customer(id, name)
+        custumer.addEvent(new CustomerCreated(id, name))
+        return custumer
     }
 
     validate() {
@@ -35,6 +44,7 @@ export default class Customer {
         // não passa por cima das regras de negócio
         this._name = name
         this.validate()
+        super.addEvent(new CustomerNameChanged(this.id, name))
     }
 
     changeAddress(address: Address) {
