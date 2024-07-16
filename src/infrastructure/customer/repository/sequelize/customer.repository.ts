@@ -45,11 +45,11 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
         return this.toCustomer(model)
     }
     private toCustomer(model: CustomerModel): Customer {
-        const res = Customer.create(
+        const res = Customer.new(
             model.id,
             model.name,
         )
-        res.changeAddress(new Address(
+        res.defineAddress(new Address(
             model.street,
             model.number,
             model.zipcode,

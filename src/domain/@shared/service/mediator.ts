@@ -3,7 +3,7 @@ import { AgreggateRoot } from "../domain/aggregate-root"
 
 export class Mediator {
 
-    eventEmitter: EventEmitter;
+    eventEmitter: EventEmitter = new EventEmitter();
 
     // quando for fazer em golang, quem sabe seja melhor
     // receber o objeto ao inves de string
@@ -14,7 +14,7 @@ export class Mediator {
     async publish(aggregate_root: AgreggateRoot) {
         const events = aggregate_root.events
         for (const event of events) {
-            await this.eventEmitter.emitAsync(event.constructor.name);
+            await this.eventEmitter.emitAsync(event.constructor.name, event.data);
         }
     }
 

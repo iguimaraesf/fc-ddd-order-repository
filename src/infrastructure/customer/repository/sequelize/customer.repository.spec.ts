@@ -24,9 +24,9 @@ describe("Teste do repositório de cliente", () => {
     })
 
     it("deve criar um cliente", async() => {
-        const customerRepository = new CustomerRepository()
         const customer = Customer.new("1", "customer 1")
         const address = new Address("street 1", 1, "Zipcode 1", "City 1")
+        const customerRepository = new CustomerRepository()
         customer.changeAddress(address)
         await customerRepository.create(customer)
 
@@ -110,11 +110,13 @@ describe("Teste do repositório de cliente", () => {
 
         const foundCustomers = await customerRepository.findAll()
 
-        /*expect(foundCustomers).toHaveLength(2);
+        customer1.clearEvents()
+        customer2.clearEvents()
+        expect(foundCustomers).toHaveLength(2);
         expect(foundCustomers).toContainEqual(customer1);
-        expect(foundCustomers).toContainEqual(customer2);*/
+        expect(foundCustomers).toContainEqual(customer2);
 
-        const removeEvents = (customer: Customer) => {
+        /*const removeEvents = (customer: Customer) => {
             const customerWithoutEvents = { ...customer };
             delete customerWithoutEvents.events;
             return customerWithoutEvents;
@@ -126,6 +128,6 @@ describe("Teste do repositório de cliente", () => {
 
         expect(foundCustomersWithoutEvents).toHaveLength(2);
         expect(foundCustomersWithoutEvents).toContainEqual(customer1WithoutEvents);
-        expect(foundCustomersWithoutEvents).toContainEqual(customer2WithoutEvents);
+        expect(foundCustomersWithoutEvents).toContainEqual(customer2WithoutEvents);*/
     })
 })
