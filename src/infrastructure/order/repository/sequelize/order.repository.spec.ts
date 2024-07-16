@@ -60,7 +60,7 @@ describe("Teste do repositório de pedidos", () => {
 
     it("Deve atualizar um pedido existente", async () => {
         let { order, customer, orderItem, product } = await criarOrdemDeTeste(orderRepository)
-        const customerNaoPodeAlterar = Customer.create("9991", "Zezinho")
+        const customerNaoPodeAlterar = Customer.new("9991", "Zezinho")
         const p2 = await criarOutroProduto()
         const orderItem2 = new OrderItem(
             "item 2",
@@ -119,12 +119,12 @@ describe("Teste do repositório de pedidos", () => {
 async function criarOrdemDeTeste(orderRepository: OrderRepositoryInterface) {
     const customerRepository: CustomerRepositoryInterface = new CustomerRepository()
 
-    const customer = Customer.create("123", "Customer 1")
+    const customer = Customer.new("123", "Customer 1")
     const address = new Address("street 1", 1, "zip 1", "city 1")
     customer.changeAddress(address)
     await customerRepository.create(customer)
 
-    const customer2 = Customer.create("9991", "Customer 2")
+    const customer2 = Customer.new("9991", "Customer 2")
     customer2.changeAddress(address)
     await customerRepository.create(customer2)
 

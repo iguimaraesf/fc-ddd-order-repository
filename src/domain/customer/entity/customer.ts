@@ -1,8 +1,9 @@
 // Modelagem de domínios ricos - entidades carregam as regras de negócio do sistema
 import { AgreggateRoot } from "../../@shared/domain/aggregate-root"
 import Address from "../value-object/address"
-import { CustomerCreated } from "./customer-created.event";
-import { CustomerNameChanged } from "./customer-name-changed.event";
+import { CustomerCreated } from "../event/customer-created.event";
+import { CustomerNameChanged } from "../event/customer-name-changed.event";
+import { CustomerAddressChanged } from "../event/customer-address-changed.event";
 
 // Os dados devem estar CONSISTENTES sempre.
 export default class Customer extends AgreggateRoot {
@@ -22,9 +23,13 @@ export default class Customer extends AgreggateRoot {
     }
 
     static create(id: string, name: string): Customer {
-        const custumer = new Customer(id, name)
+        const custumer = Customer.new(id, name)
         custumer.addEvent(new CustomerCreated(id, name))
         return custumer
+    }
+
+    static new(id: string, name: string): Customer {
+        return new Customer(id, name)
     }
 
     validate() {
@@ -48,6 +53,14 @@ export default class Customer extends AgreggateRoot {
     }
 
     changeAddress(address: Address) {
+        if (this.address == address) {
+            return
+        }
+        this.defineAddress(address)
+        super.addEvent(new CustomerAddressChanged(this.id, address))
+    }
+
+    defineAddress(address: Address) {
         this._address = address
     }
 
