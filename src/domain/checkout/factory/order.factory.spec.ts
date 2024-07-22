@@ -1,10 +1,9 @@
-import { UUID } from "sequelize/types";
 import { v4 as uuid } from "uuid";
-import OrderFactory from "./order.factory";
+import OrderFactory, { OrderFactoryProps } from "./order.factory";
 
 describe("Order factory unit test", () => {
   it("should create an order", () => {
-    const orderProps = {
+    const orderProps: OrderFactoryProps = {
       id: uuid(),
       customerId: uuid(),
       items: [

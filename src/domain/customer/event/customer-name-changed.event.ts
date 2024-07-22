@@ -1,4 +1,3 @@
-import { IDomainEvent } from "../../@shared/domain/domain-event.interface";
 import EventInterface from "../../@shared/event/event.interface";
 
 export class CustomerNameChanged implements EventInterface {

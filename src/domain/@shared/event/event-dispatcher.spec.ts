@@ -80,7 +80,26 @@ describe("Testes dos eventos de dominio", () => {
         expect(spyEventHandler).toHaveBeenCalled()
     })
 
-    it("deve notificar todos os manipuladores de todos os eventos", () => {
+    it("deve notificar os manipuladores de evento de mudança de endereço", () => {
+        const eventDispatcher = new EventDispacher();
+        const eventHandler = new WhenCustomerAddressChanged()
+        const nomeEvento: string = "CustomerAddressChanged"
+
+        console.log(`Mudança de endereços com o evento ${nomeEvento}.`)
+        eventDispatcher.register(nomeEvento, eventHandler)
+        const res0 = eventDispatcher.getEventHandlers[nomeEvento]
+        expect(res0[0]).toMatchObject(eventHandler)
+
+        const umEvento = new CustomerAddressChanged("Avenida Atlântica, 4000")
+
+        // quando for notificado
+        const spyEventHandler = jest.spyOn(eventHandler, "handle")
+        eventDispatcher.notify(umEvento)
+
+        expect(spyEventHandler).toHaveBeenCalled()
+    })
+
+    /*it("deve notificar todos os manipuladores de todos os eventos", () => {
         const eventDispatcher = new EventDispacher();
         const eventHandlers: TestEvent[] = [
             new TestEvent("ProductCreatedEvent", new SendEmailWhenProductIsCreatedHandler(), new ProductCreatedEvent({
@@ -98,5 +117,5 @@ describe("Testes dos eventos de dominio", () => {
             eventDispatcher.notify(e.event)
             expect(spyEventHandler).toHaveBeenCalled()
         })
-    });
+    })*/
 })

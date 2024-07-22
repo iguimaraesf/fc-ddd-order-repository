@@ -1,4 +1,3 @@
-import { IDomainEvent } from "../../@shared/domain/domain-event.interface";
 import { CustomerAddressChanged } from "../event/customer-address-changed.event";
 import { CustomerCreated } from "../event/customer-created.event";
 
