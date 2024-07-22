@@ -1,13 +1,14 @@
 import { IDomainEvent } from "../../@shared/domain/domain-event.interface";
+import EventInterface from "../../@shared/event/event.interface";
+import Customer from "../entity/customer";
 
-export class CustomerCreated implements IDomainEvent {
-    readonly occurred_on: Date
+export class CustomerCreated implements EventInterface {
+    readonly dateTimeOcurred: Date
     readonly event_version: number = 1;
 
     constructor(
-        readonly aggregate_id: string,
-        readonly data: any
+        readonly eventData: Customer
     ){
-        this.occurred_on = new Date();
+        this.dateTimeOcurred = new Date();
     }
 }

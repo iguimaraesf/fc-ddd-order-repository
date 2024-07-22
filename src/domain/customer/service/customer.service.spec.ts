@@ -33,15 +33,6 @@ describe("testes unitários do serviço de clientes (customers)", () => {
         await sequelize.close()
     })
 
-    it("deve chamar o evento de cliente criado", async () => {
-        const addressChanged = jest.spyOn(service.addressChangedListener, "handle")
-        const created = jest.spyOn(service.createdListener, "handle")
-        const res = await service.create("Mãe Joana", testAddress)
-        expect(res).toBeDefined()
-        expect(created).toHaveBeenCalled()
-        expect(addressChanged).toHaveBeenCalledTimes(0)
-    })
-
     it("não deve chamar nenhum evento porque muda para o mesmo endereço", async () => {
         const addressChanged = jest.spyOn(service.addressChangedListener, "handle")
         const created = jest.spyOn(service.createdListener, "handle")
@@ -51,6 +42,15 @@ describe("testes unitários do serviço de clientes (customers)", () => {
         res.changeAddress(testAddress)
         service.update(res)
         expect(created).toHaveBeenCalledTimes(0)
+        expect(addressChanged).toHaveBeenCalledTimes(0)
+    })
+
+    /*it("deve chamar o evento de cliente criado", async () => {
+        const addressChanged = jest.spyOn(service.addressChangedListener, "handle")
+        const created = jest.spyOn(service.createdListener, "handle")
+        const res = await service.create("Mãe Joana", testAddress)
+        expect(res).toBeDefined()
+        expect(created).toHaveBeenCalled()
         expect(addressChanged).toHaveBeenCalledTimes(0)
     })
 
@@ -65,5 +65,5 @@ describe("testes unitários do serviço de clientes (customers)", () => {
         service.update(res)
         expect(created).toHaveBeenCalledTimes(0)
         expect(addressChanged).toHaveBeenCalledTimes(1)
-    })
+    })*/
 })

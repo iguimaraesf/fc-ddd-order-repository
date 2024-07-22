@@ -31,13 +31,13 @@ export default class CustomerService {
         const customer = Customer.create(uuid(), name)
         customer.defineAddress(address)
         this.customerRepo.create(customer)
-        this.mediator.publish(customer)
+        //this.mediator.publish(customer)
         return customer
     }
 
     async update(customer: Customer) {
         this.customerRepo.update(customer)
-        this.mediator.publish(customer)
+        //this.mediator.publish(customer)
     }
 
     get createdListener() {

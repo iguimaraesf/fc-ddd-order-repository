@@ -110,8 +110,8 @@ describe("Teste do repositório de cliente", () => {
 
         const foundCustomers = await customerRepository.findAll()
 
-        customer1.clearEvents()
-        customer2.clearEvents()
+        //customer1.clearEvents()
+        //customer2.clearEvents()
         expect(foundCustomers).toHaveLength(2);
         expect(foundCustomers).toContainEqual(customer1);
         expect(foundCustomers).toContainEqual(customer2);
