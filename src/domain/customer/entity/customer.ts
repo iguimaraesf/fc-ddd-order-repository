@@ -6,7 +6,7 @@ import { CustomerNameChanged } from "../event/customer-name-changed.event";
 import { CustomerAddressChanged } from "../event/customer-address-changed.event";
 
 // Os dados devem estar CONSISTENTES sempre.
-export default class Customer extends AgreggateRoot {
+export default class Customer {
     private _id: string
     private _name: string = ""
     private _address!: Address
@@ -14,7 +14,7 @@ export default class Customer extends AgreggateRoot {
     private _rewardPoints: number = 0
     
     private constructor(id: string, name: string) {
-        super()
+        //super()
         // uma entidade sempre se auto valida
         this._id = id
         this._name = name
@@ -24,7 +24,6 @@ export default class Customer extends AgreggateRoot {
 
     static create(id: string, name: string): Customer {
         const custumer = Customer.new(id, name)
-        custumer.addEvent(new CustomerCreated(id, name))
         return custumer
     }
 
@@ -49,7 +48,6 @@ export default class Customer extends AgreggateRoot {
         // não passa por cima das regras de negócio
         this._name = name
         this.validate()
-        super.addEvent(new CustomerNameChanged(this.id, name))
     }
 
     changeAddress(address: Address) {
@@ -57,7 +55,6 @@ export default class Customer extends AgreggateRoot {
             return
         }
         this.defineAddress(address)
-        super.addEvent(new CustomerAddressChanged(this.id, address))
     }
 
     defineAddress(address: Address) {
