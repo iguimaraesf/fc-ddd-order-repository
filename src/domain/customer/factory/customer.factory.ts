@@ -8,7 +8,7 @@ export default class CustomerFactory {
     }
     
     public static createWithAddress(name: string, address: Address): Customer {
-        const customer = Customer.create(uuid(), name);
+        const customer = CustomerFactory.create(name);
         customer.defineAddress(address);
         return customer;
     }
