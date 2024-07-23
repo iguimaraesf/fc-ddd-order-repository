@@ -18,7 +18,6 @@ export default class Customer extends CustomerInterface {
         // uma entidade sempre se auto valida
         this._id = id
         this._name = name
-        // this._address = address
         this.validate()
     }
 
