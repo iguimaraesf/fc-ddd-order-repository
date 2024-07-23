@@ -1,5 +1,5 @@
 import  EventEmitter from 'eventemitter2'
-import { AgreggateRoot } from "../domain/aggregate-root"
+import { AggregateRoot } from "../domain/aggregate-root"
 
 export class Mediator {
 
@@ -11,7 +11,7 @@ export class Mediator {
         this.eventEmitter.on(eventName, listener);
     }
 
-    async publish(aggregate_root: AgreggateRoot) {
+    async publish(aggregate_root: AggregateRoot) {
         const events = aggregate_root.events
         for (const event of events) {
             await this.eventEmitter.emitAsync(event.constructor.name, event.eventData);

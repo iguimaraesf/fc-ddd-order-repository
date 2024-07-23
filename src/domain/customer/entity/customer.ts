@@ -1,5 +1,5 @@
 // Modelagem de domínios ricos - entidades carregam as regras de negócio do sistema
-import { AgreggateRoot } from "../../@shared/domain/aggregate-root"
+import { AggregateRoot } from "../../@shared/domain/aggregate-root"
 import Address from "../value-object/address"
 import { CustomerCreated } from "../event/customer-created.event";
 import { CustomerNameChanged } from "../event/customer-name-changed.event";
