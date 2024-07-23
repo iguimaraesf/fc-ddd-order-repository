@@ -4,11 +4,11 @@ export abstract class AggregateRoot {
     events: Set<EventInterface> = new Set()
 
     // ...sometimes raiseEvent(...)
-    addEvent(event: EventInterface){
+    addEvent(event: EventInterface) {
         this.events.add(event)
     }   
 
-    clearEvents(){
+    clearEvents() {
         this.events.clear()
     }
 }

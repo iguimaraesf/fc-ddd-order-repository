@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize-typescript"
 import ProductModel from "./product.model"
 import ProductRepository from "./product.repository"
 import Product from "../../../../domain/product/entity/product"
+import ProductFactory from "../../../../domain/product/factory/product.factory"
 
 describe("Teste do repositório de produto", () => {
     let sequelize: Sequelize
@@ -24,7 +25,7 @@ describe("Teste do repositório de produto", () => {
 
     it("deve criar um produto", async() => {
         const productRepository = new ProductRepository()
-        const product = new Product("1", "produto 1", 100)
+        const product = ProductFactory.newInstance("a", "1", "produto 1", 100)
         await productRepository.create(product)
 
         const productModel = await ProductModel.findOne({ where: {id: "1"}})
@@ -38,7 +39,7 @@ describe("Teste do repositório de produto", () => {
 
     it("deve atualizar o produto", async() => {
         const productRepository = new ProductRepository()
-        const product = new Product("1", "produto 1", 100)
+        const product = ProductFactory.newInstance("a", "1", "produto 1", 100)
         await productRepository.create(product)
 
         product.changeName("novonome")
@@ -55,7 +56,7 @@ describe("Teste do repositório de produto", () => {
 
     it("deve buscar um produto", async() => {
         const productRepository = new ProductRepository()
-        const product = new Product("1", "produto 1", 100)
+        const product = ProductFactory.newInstance("a", "1", "produto 1", 100)
         await productRepository.create(product)
 
         const productModel = await ProductModel.findOne({ where: {id: "1"}})
@@ -71,9 +72,9 @@ describe("Teste do repositório de produto", () => {
 
     it("deve buscar todos os produtos", async() => {
         const productRepository = new ProductRepository()
-        const product1 = new Product("1", "produto 1", 100)
+        const product1 = ProductFactory.newInstance("a", "1", "produto 1", 100)
         await productRepository.create(product1)
-        const product2 = new Product("2", "produto 2", 170)
+        const product2 = ProductFactory.newInstance("a", "2", "produto 2", 170)
         await productRepository.create(product2)
 
         const foundProducts = await productRepository.findAll()

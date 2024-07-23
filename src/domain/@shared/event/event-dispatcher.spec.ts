@@ -67,7 +67,7 @@ describe("Testes dos eventos de dominio", () => {
 
         const productCreatedEvent = new ProductCreatedEvent({
             name: "Produto 1",
-            description: "Descrição do produto 1",
+            id: "123",
             price: 10,
         })
 
@@ -138,7 +138,7 @@ describe("Testes dos eventos de dominio", () => {
         const eventHandlers: TestEvent[] = [
             new TestEvent("ProductCreatedEvent", new SendEmailWhenProductIsCreatedHandler(), new ProductCreatedEvent({
                 name: "Produto 1",
-                description: "Descrição do produto 1",
+                id: "999",
                 price: 10,
             })),
             new TestEvent("CustomerAddressChanged", new WhenCustomerAddressChanged(), new CustomerAddressChanged("Rua das Oliveiras")),

@@ -13,6 +13,8 @@ import Order from "../../../../domain/checkout/entity/order"
 import OrderRepository from "./order.repository"
 import OrderRepositoryInterface from "../../../../domain/checkout/repository/order-repository.interface"
 import CustomerRepositoryInterface from "../../../../domain/customer/repository/customer-repository.interface"
+import ProductInterface from "../../../../domain/product/entity/product.interface"
+import ProductFactory from "../../../../domain/product/factory/product.factory"
 
 describe("Teste do repositório de pedidos", () => {
     const orderRepository: OrderRepositoryInterface = new OrderRepository()
@@ -129,7 +131,7 @@ async function criarOrdemDeTeste(orderRepository: OrderRepositoryInterface) {
     await customerRepository.create(customer2)
 
     const productRepository = new ProductRepository()
-    const product = new Product("111", "Product 1", 10)
+    const product = ProductFactory.newInstance("a", "111", "Product 1", 10)
     await productRepository.create(product)
 
     const orderItem = new OrderItem(
@@ -144,9 +146,9 @@ async function criarOrdemDeTeste(orderRepository: OrderRepositoryInterface) {
     return { order, customer, orderItem, product }
 }
 
-async function criarOutroProduto(): Promise<Product> {
+async function criarOutroProduto(): Promise<ProductInterface> {
     const productRepository = new ProductRepository()
-    const product = new Product("222", "Product 2", 22.22)
+    const product = ProductFactory.newInstance("a", "222", "Product 2", 22.22)
     await productRepository.create(product)
     return product
 }
