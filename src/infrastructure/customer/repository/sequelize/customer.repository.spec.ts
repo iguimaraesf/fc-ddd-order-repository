@@ -24,7 +24,7 @@ describe("Teste do repositório de cliente", () => {
     })
 
     it("deve criar um cliente", async() => {
-        const customer = Customer.new("1", "customer 1")
+        const customer = Customer.newInstance("1", "customer 1")
         const address = new Address("street 1", 1, "Zipcode 1", "City 1")
         const customerRepository = new CustomerRepository()
         customer.changeAddress(address)
@@ -46,7 +46,7 @@ describe("Teste do repositório de cliente", () => {
 
     it("deve atualizar o cliente", async() => {
         const customerRepository = new CustomerRepository()
-        const customer = Customer.new("1", "customer 1")
+        const customer = Customer.newInstance("1", "customer 1")
         const address = new Address("street 1", 1, "Zipcode 1", "City 1")
         customer.changeAddress(address)
         await customerRepository.create(customer)
@@ -70,7 +70,7 @@ describe("Teste do repositório de cliente", () => {
 
     it("deve buscar um cliente", async() => {
         const customerRepository = new CustomerRepository()
-        const customer = Customer.new("1", "customer 1")
+        const customer = Customer.newInstance("1", "customer 1")
         const address = new Address("street 1", 1, "Zipcode 1", "City 1")
         customer.changeAddress(address)
         await customerRepository.create(customer)
@@ -95,23 +95,21 @@ describe("Teste do repositório de cliente", () => {
         const customerRepository = new CustomerRepository()
         expect(async() => {
             await customerRepository.find("1")
-        }).rejects.toThrow("Customer not found")
+        }).rejects.toThrow("cliente não encontrado")
     })
 
     it("deve buscar todos os clientes", async() => {
         const address = new Address("street 1", 1, "Zipcode 1", "City 1")
         const customerRepository = new CustomerRepository()
-        const customer1 = Customer.new("1", "customer 1")
-        customer1.changeAddress(address)
+        const customer1 = Customer.newInstance("1", "customer 1")
+        customer1.defineAddress(address)
         await customerRepository.create(customer1)
-        const customer2 = Customer.new("2", "customer 2")
-        customer2.changeAddress(address)
+        const customer2 = Customer.newInstance("2", "customer 2")
+        customer2.defineAddress(address)
         await customerRepository.create(customer2)
 
         const foundCustomers = await customerRepository.findAll()
 
-        //customer1.clearEvents()
-        //customer2.clearEvents()
         expect(foundCustomers).toHaveLength(2);
         expect(foundCustomers).toContainEqual(customer1);
         expect(foundCustomers).toContainEqual(customer2);

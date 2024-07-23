@@ -11,9 +11,9 @@ export default class EventDispacherFactory {
     static create(): EventDispatcherInterface {
         const dispatcher = new EventDispacher()
         dispatcher.register("ProductCreatedEvent", new SendEmailWhenProductIsCreatedHandler())
-        dispatcher.register("CustomerAddressChanged", new WhenCustomerAddressChanged())
-        dispatcher.register("CustomerCreated", new WhenCustomerIsCreated())
-        dispatcher.register("CustomerNameChanged", new WhenCustomerNameChanged())
+        dispatcher.register("CustomerAddressChangedEvent", new WhenCustomerAddressChanged())
+        dispatcher.register("CustomerCreatedEvent", new WhenCustomerIsCreated())
+        dispatcher.register("CustomerNameChangedEvent", new WhenCustomerNameChanged())
         return dispatcher
     }
 }

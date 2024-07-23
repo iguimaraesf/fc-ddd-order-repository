@@ -1,6 +1,6 @@
 import EventInterface from "../../@shared/event/event.interface";
 
-export class CustomerNameChanged implements EventInterface {
+export class CustomerNameChangedEvent implements EventInterface {
     readonly dateTimeOcurred: Date
 
     constructor(

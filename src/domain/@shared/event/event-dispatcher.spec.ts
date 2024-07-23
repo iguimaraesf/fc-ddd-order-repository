@@ -1,6 +1,6 @@
-import { CustomerAddressChanged } from "../../customer/event/customer-address-changed.event";
-import { CustomerCreated } from "../../customer/event/customer-created.event";
-import { CustomerNameChanged } from "../../customer/event/customer-name-changed.event";
+import { CustomerAddressChangedEvent } from "../../customer/event/customer-address-changed.event";
+import { CustomerCreatedEvent } from "../../customer/event/customer-created.event";
+import { CustomerNameChangedEvent } from "../../customer/event/customer-name-changed.event";
 import WhenCustomerAddressChanged from "../../customer/event/handler/when-customer-address-has-changed";
 import WhenCustomerIsCreated from "../../customer/event/handler/when-customer-is-created";
 import WhenCustomerNameChanged from "../../customer/event/handler/when-customer-name-has-changed";
@@ -82,7 +82,7 @@ describe("Testes dos eventos de dominio", () => {
     it("deve notificar os manipuladores de evento de mudança de endereço", () => {
         const eventDispatcher = new EventDispacher();
         const eventHandler = new WhenCustomerAddressChanged()
-        const umEvento = new CustomerAddressChanged("Avenida Atlântica, 4000")
+        const umEvento = new CustomerAddressChangedEvent("Avenida Atlântica, 4000")
         const nomeEvento: string = umEvento.constructor.name
 
         eventDispatcher.register(nomeEvento, eventHandler)
@@ -99,7 +99,7 @@ describe("Testes dos eventos de dominio", () => {
     it("deve notificar os manipuladores de evento de criação de um novo cliente", () => {
         const eventDispatcher = new EventDispacher();
         const eventHandler = new WhenCustomerIsCreated()
-        const umEvento = new CustomerCreated({
+        const umEvento = new CustomerCreatedEvent({
             customerId: "12345",
             customerName: "Seu Zé"
         })
@@ -119,7 +119,7 @@ describe("Testes dos eventos de dominio", () => {
     it("deve notificar os manipuladores de evento de alteração do nome do cliente", () => {
         const eventDispatcher = new EventDispacher();
         const eventHandler = new WhenCustomerNameChanged()
-        const umEvento = new CustomerNameChanged("João da Silva Sauro")
+        const umEvento = new CustomerNameChangedEvent("João da Silva Sauro")
         const nomeEvento: string = umEvento.constructor.name
 
         eventDispatcher.register(nomeEvento, eventHandler)
@@ -141,9 +141,9 @@ describe("Testes dos eventos de dominio", () => {
                 id: "999",
                 price: 10,
             })),
-            new TestEvent("CustomerAddressChanged", new WhenCustomerAddressChanged(), new CustomerAddressChanged("Rua das Oliveiras")),
-            new TestEvent("CustomerCreated", new WhenCustomerIsCreated(), new CustomerCreated({customerId: "9", customerName: "Aaa"})),
-            new TestEvent("CustomerNameChanged", new WhenCustomerNameChanged(), new CustomerNameChanged("João")),
+            new TestEvent("CustomerAddressChangedEvent", new WhenCustomerAddressChanged(), new CustomerAddressChangedEvent("Rua das Oliveiras")),
+            new TestEvent("CustomerCreatedEvent", new WhenCustomerIsCreated(), new CustomerCreatedEvent({customerId: "9", customerName: "Aaa"})),
+            new TestEvent("CustomerNameChangedEvent", new WhenCustomerNameChanged(), new CustomerNameChangedEvent("João")),
         ]
         eventHandlers.forEach(e => {
             eventDispatcher.register(e.name, e.handler)

@@ -1,7 +1,7 @@
 import EventInterface from "../../@shared/event/event.interface";
 import Customer from "../entity/customer";
 
-export class CustomerCreated implements EventInterface {
+export class CustomerCreatedEvent implements EventInterface {
     readonly dateTimeOcurred: Date
     readonly event_version: number = 1;
 

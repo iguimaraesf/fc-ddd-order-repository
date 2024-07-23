@@ -1,7 +1,7 @@
 import EventDispacherFactory from "../../@shared/event/event-dispatcher.factory";
 import ProductFactory from "../factory/product.factory";
 
-describe("eventos de domínio para a criação de um novo produto", () => {
+describe("acionamento de eventos de domínio para a criação de um novo produto", () => {
     it("deve disparar o evento de criação do produto A", () => {
         console.log("****** criação de produto A *********")
         const dispatcher = EventDispacherFactory.create()

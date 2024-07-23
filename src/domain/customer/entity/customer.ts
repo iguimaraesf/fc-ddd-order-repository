@@ -1,12 +1,12 @@
 // Modelagem de domínios ricos - entidades carregam as regras de negócio do sistema
-import { AggregateRoot } from "../../@shared/domain/aggregate-root"
 import Address from "../value-object/address"
-import { CustomerCreated } from "../event/customer-created.event";
-import { CustomerNameChanged } from "../event/customer-name-changed.event";
-import { CustomerAddressChanged } from "../event/customer-address-changed.event";
+import { CustomerCreatedEvent } from "../event/customer-created.event";
+import { CustomerNameChangedEvent } from "../event/customer-name-changed.event";
+import { CustomerAddressChangedEvent } from "../event/customer-address-changed.event";
+import { CustomerInterface } from "./customer.interface";
 
 // Os dados devem estar CONSISTENTES sempre.
-export default class Customer {
+export default class Customer extends CustomerInterface {
     private _id: string
     private _name: string = ""
     private _address!: Address
@@ -14,7 +14,7 @@ export default class Customer {
     private _rewardPoints: number = 0
     
     private constructor(id: string, name: string) {
-        //super()
+        super()
         // uma entidade sempre se auto valida
         this._id = id
         this._name = name
@@ -22,21 +22,25 @@ export default class Customer {
         this.validate()
     }
 
-    static create(id: string, name: string): Customer {
-        const custumer = Customer.new(id, name)
-        return custumer
+    static create(id: string, name: string): CustomerInterface {
+        const res = Customer.newInstance(id, name)
+        res.addEvent(new CustomerCreatedEvent({
+            customerId: res.id,
+            customerName: res.name,
+        }))
+        return res
     }
 
-    static new(id: string, name: string): Customer {
+    static newInstance(id: string, name: string): CustomerInterface {
         return new Customer(id, name)
     }
 
     validate() {
         if (this._id.length === 0) {
-            throw new Error("Id is required")
+            throw new Error("o id é obrigatório")
         }
         if (this._name.length === 0) {
-            throw new Error("Name is required")
+            throw new Error("o nome é obrigatório")
         }
     }
     
@@ -46,23 +50,30 @@ export default class Customer {
     // o estado da entidade deve estar sempre correto
     changeName(name: string): void {
         // não passa por cima das regras de negócio
+        if (this.name == name) {
+            return
+        }
         this._name = name
         this.validate()
+        super.addEvent(new CustomerNameChangedEvent(name))
     }
 
-    changeAddress(address: Address) {
+    changeAddress(address: Address): void {
         if (this.address == address) {
             return
         }
         this.defineAddress(address)
+        super.addEvent(new CustomerAddressChangedEvent(address.toString()))
     }
 
-    defineAddress(address: Address) {
+    defineAddress(address: Address): void {
         this._address = address
+        this.validate()
     }
 
-    addRewardPoints(rewardPoints: number) {
+    addRewardPoints(rewardPoints: number): void {
         this._rewardPoints += rewardPoints
+        this.validate()
     }
 
     get id(): string {
@@ -87,7 +98,7 @@ export default class Customer {
     
     activate(): void {
         if (this._address === undefined) {
-            throw new Error("Address is mandatory to activate a custumer")
+            throw new Error("o endereço é obrigatório para ativar o cliente")
         }
         this._active = true
     }

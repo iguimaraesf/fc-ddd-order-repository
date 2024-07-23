@@ -33,6 +33,7 @@ export default class EventDispacher implements EventDispatcherInterface {
         if (!this.eventHandlers[eventName]) {
             this.eventHandlers[eventName] = []
         }
+        // console.log(`*** REGISTRANDO O EVENTO ${eventName}. ***`)
         this.eventHandlers[eventName].push(eventHandler)
     }
     unregister(eventName: string, eventHandler: EventHandlerInterface): void {
