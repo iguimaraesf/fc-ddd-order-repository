@@ -1,9 +1,8 @@
-import Customer from "../../customer/entity/customer";
 import { CustomerAddressChanged } from "../../customer/event/customer-address-changed.event";
 import { CustomerCreated } from "../../customer/event/customer-created.event";
 import { CustomerNameChanged } from "../../customer/event/customer-name-changed.event";
 import WhenCustomerAddressChanged from "../../customer/event/handler/when-customer-address-has-changed";
-import WhenCustomerIsCreated from "../../customer/event/handler/when-customer-address-has-changed";
+import WhenCustomerIsCreated from "../../customer/event/handler/when-customer-is-created";
 import WhenCustomerNameChanged from "../../customer/event/handler/when-customer-name-has-changed";
 import SendEmailWhenProductIsCreatedHandler from "../../product/event/handler/send-email-when-product-is-created.handler";
 import ProductCreatedEvent from "../../product/event/product-created.event";
@@ -68,7 +67,7 @@ describe("Testes dos eventos de dominio", () => {
 
         const productCreatedEvent = new ProductCreatedEvent({
             name: "Produto 1",
-            description: "Descrição do produto 1",
+            id: "123",
             price: 10,
         })
 
@@ -83,14 +82,12 @@ describe("Testes dos eventos de dominio", () => {
     it("deve notificar os manipuladores de evento de mudança de endereço", () => {
         const eventDispatcher = new EventDispacher();
         const eventHandler = new WhenCustomerAddressChanged()
-        const nomeEvento: string = "CustomerAddressChanged"
+        const umEvento = new CustomerAddressChanged("Avenida Atlântica, 4000")
+        const nomeEvento: string = umEvento.constructor.name
 
-        console.log(`Mudança de endereços com o evento ${nomeEvento}.`)
         eventDispatcher.register(nomeEvento, eventHandler)
         const res0 = eventDispatcher.getEventHandlers[nomeEvento]
         expect(res0[0]).toMatchObject(eventHandler)
-
-        const umEvento = new CustomerAddressChanged("Avenida Atlântica, 4000")
 
         // quando for notificado
         const spyEventHandler = jest.spyOn(eventHandler, "handle")
@@ -99,23 +96,61 @@ describe("Testes dos eventos de dominio", () => {
         expect(spyEventHandler).toHaveBeenCalled()
     })
 
-    /*it("deve notificar todos os manipuladores de todos os eventos", () => {
+    it("deve notificar os manipuladores de evento de criação de um novo cliente", () => {
+        const eventDispatcher = new EventDispacher();
+        const eventHandler = new WhenCustomerIsCreated()
+        const umEvento = new CustomerCreated({
+            customerId: "12345",
+            customerName: "Seu Zé"
+        })
+        const nomeEvento: string = umEvento.constructor.name
+
+        eventDispatcher.register(nomeEvento, eventHandler)
+        const res0 = eventDispatcher.getEventHandlers[nomeEvento]
+        expect(res0[0]).toMatchObject(eventHandler)
+
+        // quando for notificado
+        const spyEventHandler = jest.spyOn(eventHandler, "handle")
+        eventDispatcher.notify(umEvento)
+
+        expect(spyEventHandler).toHaveBeenCalled()
+    })
+
+    it("deve notificar os manipuladores de evento de alteração do nome do cliente", () => {
+        const eventDispatcher = new EventDispacher();
+        const eventHandler = new WhenCustomerNameChanged()
+        const umEvento = new CustomerNameChanged("João da Silva Sauro")
+        const nomeEvento: string = umEvento.constructor.name
+
+        eventDispatcher.register(nomeEvento, eventHandler)
+        const res0 = eventDispatcher.getEventHandlers[nomeEvento]
+        expect(res0[0]).toMatchObject(eventHandler)
+
+        // quando for notificado
+        const spyEventHandler = jest.spyOn(eventHandler, "handle")
+        eventDispatcher.notify(umEvento)
+
+        expect(spyEventHandler).toHaveBeenCalled()
+    })
+
+    it("deve notificar todos os manipuladores de todos os eventos", () => {
         const eventDispatcher = new EventDispacher();
         const eventHandlers: TestEvent[] = [
             new TestEvent("ProductCreatedEvent", new SendEmailWhenProductIsCreatedHandler(), new ProductCreatedEvent({
                 name: "Produto 1",
-                description: "Descrição do produto 1",
+                id: "999",
                 price: 10,
             })),
             new TestEvent("CustomerAddressChanged", new WhenCustomerAddressChanged(), new CustomerAddressChanged("Rua das Oliveiras")),
-            new TestEvent("CustomerCreated", new WhenCustomerIsCreated(), new CustomerCreated(Customer.create("1", "Primeiro"))),
+            new TestEvent("CustomerCreated", new WhenCustomerIsCreated(), new CustomerCreated({customerId: "9", customerName: "Aaa"})),
             new TestEvent("CustomerNameChanged", new WhenCustomerNameChanged(), new CustomerNameChanged("João")),
         ]
         eventHandlers.forEach(e => {
             eventDispatcher.register(e.name, e.handler)
             const spyEventHandler = jest.spyOn(e.handler, "handle")
+            console.log(`Notificando o evento ${e.event.constructor.name}.`)
             eventDispatcher.notify(e.event)
             expect(spyEventHandler).toHaveBeenCalled()
         })
-    })*/
+    })
 })

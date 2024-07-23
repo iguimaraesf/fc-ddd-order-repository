@@ -6,8 +6,16 @@ export class CustomerCreated implements EventInterface {
     readonly event_version: number = 1;
 
     constructor(
-        readonly eventData: Customer
+        readonly eventData: CustomerCreatedProps
     ){
         this.dateTimeOcurred = new Date();
     }
+}
+
+
+export class CustomerCreatedProps {
+    constructor(
+        readonly customerId: string,
+        readonly customerName: string
+    ) {}
 }
