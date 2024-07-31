@@ -13,7 +13,15 @@ export default class Address {
     }
 
     validate() {
-
+        if (this._street == "") {
+            throw new Error("a rua é obrigatória")
+        }
+        if (this._city == "") {
+            throw new Error("a cidade é obrigatória")
+        }
+        if (this._zip == "") {
+            throw new Error("o cep é obrigatório")
+        }
     }
 
     get street(): string {
