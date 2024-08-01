@@ -1,6 +1,5 @@
 import CustomerFactory from "../../../domain/customer/factory/customer.factory"
 import Address from "../../../domain/customer/value-object/address"
-import { InputUpdateCustomerDto } from "./update.customer.dto"
 import UpdateCustomerUseCase from "./update.customer.usecase"
 
 const customer = CustomerFactory.createWithAddress("John", new Address("Street", 123, "zip", "city"))
@@ -37,6 +36,7 @@ describe("Unit test update customer usecase", () => {
             },
         }
     })
+
     it("should update a customer", async() => {
         const repository = MockRepository()
         const usecase = new UpdateCustomerUseCase(repository)

@@ -2,6 +2,7 @@
     "jestrunner.jestCommand": "npm test",
     "conventionalCommits.scopes": [
         "eventos de domínio",
-        "usecase"
+        "usecase",
+        "Use cases para Product"
     ],
 }
