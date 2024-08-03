@@ -1,9 +1,12 @@
+import { CustomerInterface } from "../../../domain/customer/entity/customer.interface"
 import CustomerFactory from "../../../domain/customer/factory/customer.factory"
 import Address from "../../../domain/customer/value-object/address"
+import { InputUpdateCustomerDto } from "./update.customer.dto"
 import UpdateCustomerUseCase from "./update.customer.usecase"
 
-const customer = CustomerFactory.createWithAddress("John", new Address("Street", 123, "zip", "city"))
-let input = {
+let customer = CustomerFactory.createWithAddress("John",
+            new Address("Street", 123, "zip", "city"))
+let input: InputUpdateCustomerDto = {
     id: "1",
     name: "",
     address: {
@@ -14,17 +17,19 @@ let input = {
     },
 }
 
-const MockRepository = () => {
+let MockRepository = () => {
     return {
-        find: jest.fn().mockReturnValue(Promise.resolve(customer)),
+        find: jest.fn(),
         findAll: jest.fn(),
         create: jest.fn(),
-        update: jest.fn(), //.mockReturnValue(Promise.resolve(input)),
+        update: jest.fn(),
     }
 }
 
 describe("Unit test update customer usecase", () => {
     beforeEach(() => {
+        customer = CustomerFactory.createWithAddress("John",
+            new Address("Street", 123, "zip", "city"))
         input = {
             id: customer.id,
             name: "John updated",
@@ -34,6 +39,14 @@ describe("Unit test update customer usecase", () => {
                 zip: "zip updated",
                 city: "city updated",
             },
+        }
+        MockRepository = () => {
+            return {
+                find: jest.fn().mockReturnValue(Promise.resolve(customer)),
+                findAll: jest.fn(),
+                create: jest.fn(),
+                update: jest.fn(), //.mockReturnValue(Promise.resolve(input)),
+            }
         }
     })
 
@@ -60,7 +73,7 @@ describe("Unit test update customer usecase", () => {
         const usecase = new UpdateCustomerUseCase(repository)
 
         input.name = ""
-        await expect(usecase.execute(input)).rejects.toThrow("o nome é obrigatório")
+        await expect(usecase.execute(input)).rejects.toThrow("customer: name is required")
     })
 
     it("should throw an error when street is missing", async() => {
@@ -68,7 +81,7 @@ describe("Unit test update customer usecase", () => {
         const usecase = new UpdateCustomerUseCase(repository)
 
         input.address.street = ""
-        await expect(usecase.execute(input)).rejects.toThrow("a rua é obrigatória")
+        await expect(usecase.execute(input)).rejects.toThrow("address: street is required")
     })
 
 })

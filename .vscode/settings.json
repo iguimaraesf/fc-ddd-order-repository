@@ -3,6 +3,8 @@
     "conventionalCommits.scopes": [
         "eventos de domínio",
         "usecase",
-        "Use cases para Product"
+        "Use cases para Product",
+        "customer api",
+        "products api"
     ],
 }
