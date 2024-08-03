@@ -1,7 +1,6 @@
-import { AggregateRoot } from "../../@shared/domain/aggregate-root";
-import EventInterface from "../../@shared/event/event.interface"
+import Entity from "../../@shared/entity/entity.abstract";
 
-export default abstract class ProductInterface extends AggregateRoot {
+export default abstract class ProductInterface extends Entity {
     abstract get id(): string
     abstract get name(): string
     abstract get price(): number

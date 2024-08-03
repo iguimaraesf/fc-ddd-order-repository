@@ -22,8 +22,10 @@ describe("Unit test for notifications", () => {
             context: "order"
         }
         notification.addError(error3)
-        expect(notification.messages("customer")).toBe("customer: error message,customer: error message 2,")
-        expect(notification.messages()).toBe("customer: error message,customer: error message 2,order: error message 3,")
+        expect(notification.messages("customer"))
+            .toBe("customer: error message,customer: error message 2,")
+        expect(notification.messages())
+            .toBe("customer: error message,customer: error message 2,order: error message 3,")
     })
 
     it("should check of notificatio has at least 1 error", () => {
@@ -46,6 +48,5 @@ describe("Unit test for notifications", () => {
         notification.addError(error)
 
         expect(notification.getErrors()).toEqual([error])
-
     })
 })

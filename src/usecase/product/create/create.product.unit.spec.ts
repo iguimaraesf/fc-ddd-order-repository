@@ -40,7 +40,7 @@ describe("Unit test for creating products usecase", () => {
         const usecase = new CreateProductUseCase(repository)
 
         input.name = ""
-        await expect(usecase.execute(input)).rejects.toThrow("Name is required")
+        await expect(usecase.execute(input)).rejects.toThrow("product: name is required")
     })
 
     it("should throw an error when the price is invalid", async() => {
@@ -48,6 +48,6 @@ describe("Unit test for creating products usecase", () => {
         const usecase = new CreateProductUseCase(repository)
 
         input.price = -0.99
-        await expect(usecase.execute(input)).rejects.toThrow("Price must be greater than zero")
+        await expect(usecase.execute(input)).rejects.toThrow("product: price must be greater than zero")
     })
 })
