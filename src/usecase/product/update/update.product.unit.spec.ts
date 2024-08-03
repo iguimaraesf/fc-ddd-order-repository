@@ -1,7 +1,12 @@
 import ProductFactory from "../../../domain/product/factory/product.factory"
 import UpdateProductUseCase from "./update.product.usecase"
 
-const entity = ProductFactory.create("a", "Product - One", 9.95)
+// ___________________________
+//
+// Estava dando erro porque a variável entity estava como constante.
+// A função update ATUALIZA O VALOR dessa variável, e isso afetava os outros testes.
+// ___________________________
+let entity = ProductFactory.create("a", "xxxx", 0.01)
 let input = {
     id: "",
     name: "",
@@ -13,12 +18,13 @@ const MockRepository = () => {
         find: jest.fn().mockReturnValue(Promise.resolve(entity)),
         findAll: jest.fn(),
         create: jest.fn(),
-        update: jest.fn(), //.mockReturnValue(Promise.resolve(input)),
+        update: jest.fn(),
     }
 }
 
 describe("Unit test update customer usecase", () => {
     beforeEach(() => {
+        entity = ProductFactory.create("a", "Product - One", 9.95)
         input = {
             id: entity.id,
             name: "Updated Product",
@@ -45,18 +51,18 @@ describe("Unit test update customer usecase", () => {
     })
 
     it("should throw an error when name is missing", async() => {
+        input.name = ""
         const repository = MockRepository()
         const usecase = new UpdateProductUseCase(repository)
 
-        input.name = ""
-        await expect(usecase.execute(input)).rejects.toThrow("Name is required")
+        await expect(usecase.execute(input)).rejects.toThrow("product: name is required")
     })
 
     it("should throw an error when the price is invalid", async() => {
+        input.price = -0.99
         const repository = MockRepository()
         const usecase = new UpdateProductUseCase(repository)
 
-        input.price = -0.99
-        await expect(usecase.execute(input)).rejects.toThrow("Price must be greater than zero")
+        await expect(usecase.execute(input)).rejects.toThrow("product: price must be greater than zero")
     })
 })

@@ -1,3 +1,4 @@
+import NotificationError from "../../@shared/notification/notification.error"
 import ProductFactory from "../factory/product.factory"
 import Product from "./product"
 import ProductDoubledPrice from "./product-b"
@@ -6,18 +7,29 @@ describe("product unit tests", () => {
     it("should throw an error when the id is empty", () => {
         expect(() => {
             const product = ProductFactory.newInstance("a", "", "Produto 1", 100)
-        }).toThrow("Id is required")
+        }).toThrow("product: id is required")
     })
     it("should throw an error when the name is empty", () => {
         expect(() => {
             const product = ProductFactory.newInstance("a", "1", "", 100)
-        }).toThrow("Name is required")
+        }).toThrow("product: name is required")
     })
     it("should throw an error when the price is less than zero", () => {
         expect(() => {
             const product = ProductFactory.newInstance("a", "1", "Teste", -100)
-        }).toThrow("Price must be greater than zero")
+        }).toThrow("product: price must be greater than zero")
     })
+
+    // Desafio Clean Architecture
+    it("should throw an error with all messages", () => {
+        expect(() => {
+            ProductFactory.newInstance("a", "", "", -1)
+        }).toThrow("product: id is required,product: name is required,product: price must be greater than zero")
+        expect(() => {
+            ProductFactory.newInstance("a", "", "", -1)
+        }).toThrow(NotificationError)
+    })
+
     it("should change name", () => {
         const product = ProductFactory.newInstance("a", "1", "Teste", 100)
         product.changeName("Product 2")

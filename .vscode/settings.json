@@ -5,6 +5,7 @@
         "usecase",
         "Use cases para Product",
         "customer api",
-        "products api"
+        "products api",
+        "notification pattern"
     ],
 }
