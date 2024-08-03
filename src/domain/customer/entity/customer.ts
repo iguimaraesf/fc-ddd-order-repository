@@ -4,10 +4,10 @@ import { CustomerCreatedEvent } from "../event/customer-created.event";
 import { CustomerNameChangedEvent } from "../event/customer-name-changed.event";
 import { CustomerAddressChangedEvent } from "../event/customer-address-changed.event";
 import { CustomerInterface } from "./customer.interface";
+import NotificationError from "../../@shared/notification/notification.error";
 
 // Os dados devem estar CONSISTENTES sempre.
 export default class Customer extends CustomerInterface {
-    private _id: string
     private _name: string = ""
     private _address!: Address
     private _active: boolean = false
@@ -36,10 +36,19 @@ export default class Customer extends CustomerInterface {
 
     validate() {
         if (this._id.length === 0) {
-            throw new Error("o id é obrigatório")
+            this.notification.addError({
+                context: "customer",
+                message: "id is required"
+            })
         }
         if (this._name.length === 0) {
-            throw new Error("o nome é obrigatório")
+            this.notification.addError({
+                context: "customer",
+                message: "name is required"
+            })
+        }
+        if (this.notification.hasErrors()) {
+            throw new NotificationError(this.notification.getErrors())
         }
     }
     

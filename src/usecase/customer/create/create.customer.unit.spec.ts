@@ -50,7 +50,7 @@ describe("Unit test create customer usecase", () => {
         const usecase = new CreateCustomerUseCase(repository)
 
         input.name = ""
-        await expect(usecase.execute(input)).rejects.toThrow("o nome é obrigatório")
+        await expect(usecase.execute(input)).rejects.toThrow("customer: name is required")
     })
 
     it("should throw an error when street is missing", async() => {
@@ -58,6 +58,6 @@ describe("Unit test create customer usecase", () => {
         const usecase = new CreateCustomerUseCase(repository)
 
         input.address.street = ""
-        await expect(usecase.execute(input)).rejects.toThrow("a rua é obrigatória")
+        await expect(usecase.execute(input)).rejects.toThrow("address: street is required")
     })
 })

@@ -1,7 +1,7 @@
-import { AggregateRoot } from "../../@shared/domain/aggregate-root";
+import Entity from "../../@shared/entity/entity.abstract";
 import Address from "../value-object/address";
 
-export abstract class CustomerInterface extends AggregateRoot {
+export abstract class CustomerInterface extends Entity {
     abstract changeName(name: string): void
     abstract changeAddress(address: Address): void
     abstract defineAddress(address: Address): void

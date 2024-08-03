@@ -4,6 +4,7 @@
         "eventos de domínio",
         "usecase",
         "Use cases para Product",
-        "customer api"
+        "customer api",
+        "products api"
     ],
 }

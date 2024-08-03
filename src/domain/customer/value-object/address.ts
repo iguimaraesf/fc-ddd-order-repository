@@ -1,10 +1,14 @@
-export default class Address {
+import Entity from "../../@shared/entity/entity.abstract"
+import NotificationError from "../../@shared/notification/notification.error"
+
+export default class Address extends Entity {
     _street: string = ""
     _number: number = 0
     _zip: string = ""
     _city: string = ""
 
     constructor(street: string, number: number, zip: string, city: string) {
+        super()
         this._street = street
         this._number = number
         this._city = city
@@ -14,13 +18,25 @@ export default class Address {
 
     validate() {
         if (this._street == "") {
-            throw new Error("a rua é obrigatória")
+            this.notification.addError({
+                context: "address",
+                message: "street is required",
+            })
         }
         if (this._city == "") {
-            throw new Error("a cidade é obrigatória")
+            this.notification.addError({
+                context: "address",
+                message: "city is required",
+            })
         }
         if (this._zip == "") {
-            throw new Error("o cep é obrigatório")
+            this.notification.addError({
+                context: "address",
+                message: "zip code is required",
+            })
+        }
+        if (this.notification.hasErrors()) {
+            throw new NotificationError(this.notification.getErrors())
         }
     }
 
