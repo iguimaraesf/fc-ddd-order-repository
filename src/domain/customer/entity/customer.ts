@@ -5,6 +5,7 @@ import { CustomerNameChangedEvent } from "../event/customer-name-changed.event";
 import { CustomerAddressChangedEvent } from "../event/customer-address-changed.event";
 import { CustomerInterface } from "./customer.interface";
 import NotificationError from "../../@shared/notification/notification.error";
+import CustomerValidatorFactory from "../factory/customer.validator.factory";
 
 // Os dados devem estar CONSISTENTES sempre.
 export default class Customer extends CustomerInterface {
@@ -35,18 +36,7 @@ export default class Customer extends CustomerInterface {
     }
 
     validate() {
-        if (this._id.length === 0) {
-            this.notification.addError({
-                context: "customer",
-                message: "id is required"
-            })
-        }
-        if (this._name.length === 0) {
-            this.notification.addError({
-                context: "customer",
-                message: "name is required"
-            })
-        }
+        CustomerValidatorFactory.create().validate(this)
         if (this.notification.hasErrors()) {
             throw new NotificationError(this.notification.getErrors())
         }
